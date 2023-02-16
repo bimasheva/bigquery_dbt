@@ -5,7 +5,7 @@ with tripdata as
   select *,
     row_number() over(partition by dispatching_base_num, pickup_datetime) as rn
   from {{ source("staging", "fhv_tripdata_partitioned") }}
-  where dispatching_base_num is not null 
+  where PUlocationID is not null  AND DOlocationID is not null
 )
 
 select 
@@ -24,4 +24,4 @@ select
     Affiliated_base_number as affiliated_basenum,
     
 from tripdata
-where rn = 1
+where DATE(pickup_datetime) between "2019-01-01" AND "2019-12-31"
